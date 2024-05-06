@@ -1,8 +1,9 @@
 console.log("Hello Word!");
 
+// Import Player class from player.js
 import Player from "../js/player.js";
 
-// Grbas and define context to canvas element
+// Grabs canvas element and define context for it
 const myCanvas = document.getElementById("canvas");
 export const ctx = myCanvas.getContext("2d");
 
@@ -20,13 +21,14 @@ canvas.width = config.canvasWidth;
 canvas.height = config.canvasHeight;
 
 // Define players objects
-const player1 = new Player(1, config); // Left side player
-const player2 = new Player(-1, config); // Right side player
+const player1 = new Player(1); // Left side player
+const player2 = new Player(-1); // Right side player
 
 // Render Game
 function renderGame() {
-  player1.render(ctx);
-  player2.render(ctx);
+  player1.renderPlayer();
+  player2.renderPlayer();
+  // Render Ball
 }
 
 // Function to call the other funcions (creating a loop for animation and updating the canvas)
