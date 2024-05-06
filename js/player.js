@@ -1,6 +1,9 @@
-class Player {
+import { ctx, config } from "../js/main.js";
+
+// Export the class which has all the player controls
+export default class Player {
   // Direction indicates the left and right side players
-  constructor(direction) {
+  constructor(direction, config) {
     this.direction = direction;
     direction === 1
       ? (this.x = 0 + 50)
