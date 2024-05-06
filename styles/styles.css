@@ -1,0 +1,28 @@
+:root {
+  --bg: #000000;
+  --color: #fdfdfd;
+}
+
+/* Globals */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: calc(1em + 0.5rem);
+  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+  color: var(--color);
+}
+
+body {
+  background-color: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#canvas {
+  border: 2px solid var(--color);
+}
