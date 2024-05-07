@@ -7,7 +7,7 @@ export default class Player {
   constructor(direction) {
     this.direction = direction;
     direction === 1
-      ? (this.x = 0 + 50)
+      ? (this.x = 50)
       : (this.x = config.canvasWidth - config.playerWidth - 50);
     this.y = config.canvasHeight / 2 - config.playerHeight / 2;
     this.score = 0;
@@ -15,7 +15,20 @@ export default class Player {
 
   // Functino to render the players on the canvas
   renderPlayer() {
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(this.x, this.y, config.playerWidth, config.playerHeight);
+    ctx.font = "50px Poppins";
+    ctx.fillText(this.score, config.canvasWidth / 2 + 200 * this.direction, 50);
+  }
+
+  moveUp() {
+    this.y -= config.playerSpeed;
+    this.y < 0 && (this.y = 0);
+  }
+
+  moveDown() {
+    this.y += config.playerSpeed;
+    this.y + config.playerHeight > config.canvasHeight &&
+      (this.y = config.canvasHeight - config.playerHeight);
   }
 }
