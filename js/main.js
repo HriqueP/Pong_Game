@@ -88,7 +88,7 @@ function moveBall() {
   ball.y += ball.dy;
 }
 
-function wallsColisions() {
+function wallsCollisions() {
   if (ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height) {
     ball.dy = ball.dy * -1;
   }
@@ -100,7 +100,7 @@ function bouceBall(player) {
   ball.dy = (ball.y - (player.y + config.playerHeight / 2)) / config.ballSlice;
 }
 
-function playerColision() {
+function playerCollision() {
   if (ball.x - ball.r <= config.playerWidth) {
     if (player1.checkCollision(ball)) {
       bouceBall(player1);
@@ -150,8 +150,8 @@ function renderGame() {
 function animate() {
   renderGame();
   handleMoves();
-  wallsColisions();
-  playerColision();
+  wallsCollisions();
+  playerCollision();
   checkWin();
   moveBall();
   window.requestAnimationFrame(animate);
