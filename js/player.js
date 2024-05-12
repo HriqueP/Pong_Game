@@ -7,13 +7,13 @@ export default class Player {
   constructor(direction) {
     this.direction = direction;
     direction === 1
-      ? (this.x = 50)
-      : (this.x = config.canvasWidth - config.playerWidth - 50);
+      ? (this.x = 0)
+      : (this.x = config.canvasWidth - config.playerWidth);
     this.y = config.canvasHeight / 2 - config.playerHeight / 2;
     this.score = 0;
   }
 
-  // Functino to render the players on the canvas
+  // Function to render the players on the canvas
   renderPlayer() {
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(this.x, this.y, config.playerWidth, config.playerHeight);
@@ -30,5 +30,18 @@ export default class Player {
     this.y += config.playerSpeed;
     this.y + config.playerHeight > config.canvasHeight &&
       (this.y = config.canvasHeight - config.playerHeight);
+  }
+
+  checkCollision(ball) {
+    if (
+      this.y <= ball.y + ball.r &&
+      this.y + config.playerHeight >= ball.y - ball.r
+    ) {
+      return true;
+    }
+  }
+
+  win() {
+    this.score++;
   }
 }

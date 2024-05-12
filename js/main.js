@@ -12,24 +12,16 @@ export const config = {
   canvasWidth: 1200,
   canvasHeight: 800,
   playerWidth: 10,
-  playerHeight: 80,
+  playerHeight: 100,
   playerSpeed: 10,
+  ballXSpeed: 8,
+  ballYSpeed: 8,
+  ballSlice: 4,
 };
 
 // Draw the canvas
 canvas.width = config.canvasWidth;
 canvas.height = config.canvasHeight;
-
-// Draw line in the middle
-function createLine() {
-  ctx.beginPath();
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = "#fdfdfd";
-  ctx.setLineDash([20, 10]);
-  ctx.moveTo(config.canvasWidth / 2, 0);
-  ctx.lineTo(config.canvasWidth / 2, config.canvasHeight);
-  ctx.stroke();
-}
 
 // Define players objects
 const player1 = new Player(1); // Left side player
@@ -50,6 +42,22 @@ const controller = {
   ArrowUp: { pressed: false, func: player2.moveUp.bind(player2) }, // Binding the method to player2 using the .bind(obj) method
   ArrowDown: { pressed: false, func: player2.moveDown.bind(player2) }, // Binding the method to player2 using the .bind(obj) method
 };
+
+const ball = {
+  r: 8,
+};
+
+function placeBall() {
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.dx = 0;
+  ball.dy = 0;
+  setTimeout(() => {
+    ball.dx = config.ballXSpeed * Math.sign(Math.random() - 0.5);
+    ball.dy = config.ballYSpeed * Math.sign(Math.random() - 0.5);
+  }, 1000);
+}
+placeBall();
 
 // Event listener for the keydown event (set 'pressed' to TRUE )
 document.addEventListener("keydown", (e) => {
@@ -75,19 +83,77 @@ function handleMoves() {
   });
 }
 
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+}
+
+function wallsColisions() {
+  if (ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height) {
+    ball.dy = ball.dy * -1;
+  }
+}
+
+function bouceBall(player) {
+  ball.dx = -1 * ball.dx;
+  ball.x += Math.sign(ball.dx) * 8;
+  ball.dy = (ball.y - (player.y + config.playerHeight / 2)) / config.ballSlice;
+}
+
+function playerColision() {
+  if (ball.x - ball.r <= config.playerWidth) {
+    if (player1.checkCollision(ball)) {
+      bouceBall(player1);
+    }
+  }
+  if (ball.x + ball.r >= canvas.width - config.playerWidth) {
+    if (player2.checkCollision(ball)) {
+      bouceBall(player2);
+    }
+  }
+}
+
+function checkWin() {
+  if (ball.x + ball.r <= 0) {
+    scorePoint(player1);
+  }
+
+  if (ball.x - ball.r >= canvas.width) {
+    scorePoint(player2);
+  }
+}
+
+function scorePoint(player) {
+  placeBall();
+  player.win();
+}
+
+// Draw ball
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI, false);
+  ctx.fillStyle = "#fdfdfd";
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.stroke();
+}
+
 // Render players and ball in the canvas
 function renderGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  createLine();
   player1.renderPlayer();
   player2.renderPlayer();
-  // Render Ball
+  drawBall();
 }
 
 // Function to call the other funcions (creating a loop for animation and updating the canvas)
 function animate() {
-  handleMoves();
   renderGame();
+  handleMoves();
+  wallsColisions();
+  playerColision();
+  checkWin();
+  moveBall();
   window.requestAnimationFrame(animate);
 }
 window.requestAnimationFrame(animate);
