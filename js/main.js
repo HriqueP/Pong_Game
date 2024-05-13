@@ -101,12 +101,12 @@ function bouceBall(player) {
 }
 
 function playerCollision() {
-  if (ball.x - ball.r <= config.playerWidth) {
+  if (ball.x - ball.r <= config.playerWidth + 50) {
     if (player1.checkCollision(ball)) {
       bouceBall(player1);
     }
   }
-  if (ball.x + ball.r >= canvas.width - config.playerWidth) {
+  if (ball.x + ball.r >= canvas.width - config.playerWidth - 50) {
     if (player2.checkCollision(ball)) {
       bouceBall(player2);
     }

@@ -7,8 +7,8 @@ export default class Player {
   constructor(direction) {
     this.direction = direction;
     direction === 1
-      ? (this.x = 0)
-      : (this.x = config.canvasWidth - config.playerWidth);
+      ? (this.x = 50)
+      : (this.x = config.canvasWidth - config.playerWidth - 50);
     this.y = config.canvasHeight / 2 - config.playerHeight / 2;
     this.score = 0;
   }
